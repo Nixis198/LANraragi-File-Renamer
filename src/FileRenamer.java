@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class FileRenamer {
     static String folder;
     public static void main(String[] args) throws Exception {
-        run("L:\\Testing\\1-1000\\");
+        run(args[0] + "\\");
     }
 
     public static void run(String m_folder) {
