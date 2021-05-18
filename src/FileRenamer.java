@@ -2,26 +2,33 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileRenamer {
     static String folder;
+    static String doneFolder;
+    static int timeOut;
     public static void main(String[] args) throws Exception {
+        // java FileRenamer source destination timeout
+        doneFolder = args[1] + "\\";
+        timeOut = Integer.parseInt(args[2]);
         run(args[0] + "\\");
     }
 
-    public static void run(String m_folder) {
+    public static void run(String m_folder) throws InterruptedException {
         folder = m_folder;
         String[] list = getFileNames(m_folder);
         for(int i = 0; i < list.length; i++) {
             renameFiles(list[i], runRegex(extractZipComment(list[i])));
+            TimeUnit.SECONDS.sleep(timeOut);
         }
     }
 
     public static void renameFiles(String file, String ID) {
         File oldFile = new File(folder + file);
-        File newFile = new File(folder + ID + ". " + file);
+        File newFile = new File(doneFolder + ID + ". " + file);
         if(oldFile.renameTo(newFile)) {
             System.out.println("Renamed: " + newFile.getName());
         }else {
